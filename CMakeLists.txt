@@ -6,5 +6,7 @@ set(CMAKE_BUILD_TYPE "Release")
 
 # Set source file
 add_executable(${CMAKE_PROJECT_NAME}
-    ${CMAKE_SOURCE_DIR}/src/main/cpp
+    ${CMAKE_SOURCE_DIR}/src/main.cpp
+    ${CMAKE_SOURCE_DIR}/src/transaction.cpp
+    ${CMAKE_SOURCE_DIR}/src/helper.cpp
 )
