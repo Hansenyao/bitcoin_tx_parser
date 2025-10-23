@@ -26,7 +26,8 @@ class transaction {
 public:
     transaction(){};
     virtual ~transaction(){};
-    bool parseTransaction(const vector<uint8_t>& data);
+    bool parse(const vector<uint8_t>& data);
+    void print();
 private:
     uint32_t version_;
     vector<TxInput> vins_;

@@ -3,7 +3,7 @@
 
 namespace bitcoin {
 
-bool transaction::parseTransaction(const vector<uint8_t>& data) {
+bool transaction::parse(const vector<uint8_t>& data) {
     size_t offset = 0;
 
     // Version
@@ -65,6 +65,39 @@ bool transaction::parseTransaction(const vector<uint8_t>& data) {
 
     locktime_ = readUInt32LE(data, offset);
     return true;
+}
+
+// Print transaction content
+void transaction::print() {
+    cout << "Version: " << version_ << endl;
+    cout << "Has Witness: " << hasWitness_ << endl;
+
+    cout << "--- Inputs ---" << endl;
+    for (size_t i = 0; i < vins_.size(); ++i) {
+        const TxInput& in = vins_[i];
+        cout << "Input #" << i << endl;
+        cout << "  PrevTxHash: " << bytesToHex(in.prevTxHash) << endl;
+        cout << "  PrevTxIndex: " << in.prevTxIndex << endl;
+        parseScript(in.scriptSig);
+        cout << "  Sequence: " << in.sequence << endl;
+
+        if (in.witness.size() > 0) {
+            cout << "  Witness:" << endl;
+            for (size_t j = 0; j < in.witness.size(); ++j) {
+                cout << "    " << j << ": " << bytesToHex(in.witness[j]) << endl;
+            }
+        }
+    }
+
+    cout << "--- Outputs ---" << endl;
+    for (size_t i = 0; i < vouts_.size(); ++i) {
+        const TxOutput& out = vouts_[i];
+        cout << "Output #" << i << endl;
+        cout << "  Value: " << out.value << " sats" << endl;
+        parseScript(out.scriptPubKey);
+    }
+
+    cout << "LockTime: " << locktime_ << endl;
 }
 
 }
